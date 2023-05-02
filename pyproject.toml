@@ -1,0 +1,46 @@
+[project]
+name = "watch-bot"
+dynamic = ["version"]
+description = "Implementation of the watchbot, to control the behaviour of a LLM-based chatbot"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+  {name = "Francesco Calcavecchia", email = "francesco086@gmail.com"}
+]
+maintainers = [
+  {name = "Francesco Calcavecchia", email = "francesco086@gmail.com"}
+]
+classifiers = [
+  "Programming Language :: Python"
+]
+
+dependencies = [
+  "pydantic~=1.0",
+  "openai~=0.27",
+]
+
+# [project.urls]
+# homepage = "https://example.com"
+# documentation = "https://readthedocs.org"
+# repository = "https://github.com"
+# changelog = "https://github.com/me/spam/blob/master/CHANGELOG.md"
+
+# [project.scripts]
+# cli-name = "py.file.path:function"
+
+[build-system]
+requires = [
+    "setuptools>=45",
+    "wheel",
+    "setuptools_scm[toml]>=6.2"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.black]
+line-length = 120
+
+[tool.ruff]
+line-length = 120
