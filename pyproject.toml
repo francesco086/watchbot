@@ -17,6 +17,7 @@ classifiers = [
 
 dependencies = [
   "pydantic~=1.0",
+  "jinja2~=3.0",
   "openai~=0.27",
 ]
 
