@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         os: ["ubuntu-latest"]
-        version: ["3.9", "3.10", "3.11"]
+        version: ["3.11"]
     steps:
     - name: Checkout 🔖
       uses: actions/checkout@v3
@@ -66,7 +66,12 @@ jobs:
 
   pypi-release:
     needs: [test, check-style]
-    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: release
+      url: https://pypi.org/p/watch-bot
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     steps:
     - name: Checkout 🔖
@@ -77,16 +82,14 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: "3.11"
-    - name: Prepare release 🙆‍♂️📦test
+    - name: Prepare release 🙆‍♂️📦
       run: |
         python -m venv venv || . venv/bin/activate
         pip install -U pip wheel setuptools build twine
     - name: Build 🛠️📦
       run: |
         python -m build
+        ls
+        ls dist/
     - name: Release 📦🚀
-      env:
-        TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-      run: |
-        python -m twine upload dist/*
+      uses: pypa/gh-action-pypi-publish@release/v1
