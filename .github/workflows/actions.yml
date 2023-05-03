@@ -89,7 +89,5 @@ jobs:
     - name: Build 🛠️📦
       run: |
         python -m build
-        ls
-        ls dist/
     - name: Release 📦🚀
       uses: pypa/gh-action-pypi-publish@release/v1

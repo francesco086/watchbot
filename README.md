@@ -7,7 +7,7 @@ This python projects implements the idea of a watchbot introduced in [this mediu
 ### Installation
 
 ```sh
-pip install git+https://github.com/francesco086/watchbot
+pip install watch-bot
 ```
 
 ### Usage
