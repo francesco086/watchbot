@@ -55,6 +55,12 @@ jobs:
         pip install -U pip wheel setuptools
         pip install -r requirements-dev.txt
     - name: Run tests 🔬🚀
+      env:
+        OPENAI_API_BASE: ${{ secrets.OPENAI_API_BASE }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        OPENAI_API_TYPE: ${{ secrets.OPENAI_API_TYPE }}
+        OPENAI_API_VERSION: ${{ secrets.OPENAI_API_VERSION }}
+        OPENAI_ENGINE: ${{ secrets.OPENAI_ENGINE }}
       run: |
         python -m unittest discover -s test
 
