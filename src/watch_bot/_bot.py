@@ -8,8 +8,9 @@ from watch_bot._response import WatchBotResponse
 
 
 class WatchBot:
-    def __init__(self, engine: str) -> None:
+    def __init__(self, engine: str, chatbot_instructions: str) -> None:
         self._engine = engine
+        self._chatbot_instructions = chatbot_instructions
 
     def check_dialog(self, dialog: Dialog) -> WatchBotResponse:
         answer = self._ask_gpt_if_dialog_is_suspicious(dialog=dialog)
@@ -20,15 +21,6 @@ class WatchBot:
         else:
             raise ValueError(f"Unexpected answer: {answer}")
 
-    def build_prompt(self, dialog: Dialog) -> str:
-        template = self._load_template()
-        messages = [
-            f'"{"User" if i%2 == 0 else "Chatbot"}": "{self._replace_double_with_single_quotation_mark(m)}"'
-            for i, m in enumerate(dialog.messages)
-        ]
-        conversation_content = "\n".join(messages)
-        return template.render(conversation_content=conversation_content)
-
     def _ask_gpt_if_dialog_is_suspicious(self, dialog: Dialog) -> str:
         completion = openai.Completion.create(
             prompt=self.build_prompt(dialog=dialog),
@@ -37,6 +29,17 @@ class WatchBot:
             engine=self._engine,
         )
         return completion.choices[0]["text"]  # type: ignore
+
+    def build_prompt(self, dialog: Dialog) -> str:
+        template = self._load_template()
+        messages = [
+            f'"{"User" if i%2 == 0 else "Chatbot"}": "{self._replace_double_with_single_quotation_mark(m)}"'
+            for i, m in enumerate(dialog.messages)
+        ]
+        conversation_content = "\n".join(messages)
+        return template.render(
+            chatbot_instructions=self._chatbot_instructions, conversation_content=conversation_content
+        )
 
     @staticmethod
     def _load_template() -> Template:

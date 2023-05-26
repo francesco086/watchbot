@@ -27,7 +27,11 @@ You can then create a watchbot instance:
 ```py
 from watch_bot import WatchBot
 
-bot = WatchBot(engine=os.environ["OPENAI_ENGINE"])
+bot = WatchBot(
+    engine=os.environ["OPENAI_ENGINE"],
+    chatbot_instructions="You are an AI assistant that helps people find information. "
+                         "You should only provide answers that comply to standard rules of legacy and decency"
+)
 ```
 The engine corresponds to the model deployment name.
 
