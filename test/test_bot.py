@@ -18,8 +18,8 @@ class TestWatchBot(TestCase):
         openai.api_base = os.environ["OPENAI_API_BASE"]
         openai.api_key = os.environ["OPENAI_API_KEY"]
 
-    def test_instance_with_defaults_has_check_dialog_method(self) -> None:
-        self.assertTrue(hasattr(self.bot, "check_dialog"))
+    def test_instance_with_defaults_has_verify_method(self) -> None:
+        self.assertTrue(hasattr(self.bot, "verify"))
 
     def test_build_prompt(self) -> None:
         self.assertTrue(
@@ -34,12 +34,12 @@ class TestWatchBot(TestCase):
 
     def test_check_regular_dialog_returns_should_not_stop(self) -> None:
         dialog = Dialog(messages=["Hi", "Hello"])
-        response = self.bot.check_dialog(dialog=dialog)
+        response = self.bot.verify(dialog=dialog)
         self.assertFalse(response.should_stop)
         self.assertEqual(len(response.reason), 0)
 
     def test_check_dialog_with_hack_attack_returns_should_not_stop(self) -> None:
         dialog = Dialog(messages=[read_hack_prompt(), read_hack_prompt_answer()])
-        response = self.bot.check_dialog(dialog=dialog)
+        response = self.bot.verify(dialog=dialog)
         self.assertTrue(response.should_stop)
         self.assertGreater(len(response.reason), 0)

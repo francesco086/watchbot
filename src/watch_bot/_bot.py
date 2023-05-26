@@ -12,7 +12,7 @@ class WatchBot:
         self._engine = engine
         self._chatbot_instructions = chatbot_instructions
 
-    def check_dialog(self, dialog: Dialog) -> WatchBotResponse:
+    def verify(self, dialog: Dialog) -> WatchBotResponse:
         answer = self._ask_gpt_if_dialog_is_suspicious(dialog=dialog)
         if "yes" in answer[:5].lower():
             return WatchBotResponse(should_stop=True, reason=answer)
