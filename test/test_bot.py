@@ -42,7 +42,16 @@ class TestWatchBot(TestCase):
         dialog = Dialog(messages=["Hi", "Hello"])
         response = self.bot.verify(dialog=dialog)
         self.assertFalse(response.should_stop)
-        self.assertEqual(len(response.reason), 0)
+        self.assertGreater(len(response.reason), 0)
+
+    def test_check_regular_dialog_with_saruman(self) -> None:
+        bot = WatchBot(engine=os.environ["OPENAI_ENGINE"], chatbot_instructions=read_saruman_pre_prompt(1))
+        dialog = Dialog(
+            messages=["What is your name?", "I am Saruman the White, a wizard of Middle-earth. How may I assist you?"]
+        )
+        response = bot.verify(dialog=dialog)
+        self.assertFalse(response.should_stop)
+        self.assertGreater(len(response.reason), 0)
 
     def test_check_dialog_with_dan_hack_attack_returns_should_stop(self) -> None:
         dialog = Dialog(messages=[read_hack_prompt(), read_hack_prompt_answer()])

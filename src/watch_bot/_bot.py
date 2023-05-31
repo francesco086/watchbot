@@ -17,7 +17,7 @@ class WatchBot:
         if "yes" in answer.lower():
             return WatchBotResponse(should_stop=True, reason=answer)
         elif "no" in answer.lower():
-            return WatchBotResponse(should_stop=False, reason="")
+            return WatchBotResponse(should_stop=False, reason=answer)
         else:
             raise ValueError(f"Unexpected answer: {answer}")
 
@@ -43,7 +43,7 @@ class WatchBot:
 
     @staticmethod
     def _load_template() -> Template:
-        template_file_content = (Path(__file__).parent / "prompt.template").read_text()
+        template_file_content = (Path(__file__).parent / "prompt.j2").read_text()
         template_file_content_without_last_empty_line = template_file_content[:-1]
         return Template(template_file_content_without_last_empty_line)
 
