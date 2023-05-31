@@ -2,7 +2,13 @@ import os
 from unittest import TestCase
 
 import openai
-from data import read_hack_prompt, read_hack_prompt_answer
+from data import (
+    read_hack_prompt,
+    read_hack_prompt_answer,
+    read_saruman_hack_prompt,
+    read_saruman_hack_prompt_answer,
+    read_saruman_pre_prompt,
+)
 from watch_bot import Dialog, WatchBot
 
 
@@ -38,8 +44,15 @@ class TestWatchBot(TestCase):
         self.assertFalse(response.should_stop)
         self.assertEqual(len(response.reason), 0)
 
-    def test_check_dialog_with_hack_attack_returns_should_not_stop(self) -> None:
+    def test_check_dialog_with_dan_hack_attack_returns_should_stop(self) -> None:
         dialog = Dialog(messages=[read_hack_prompt(), read_hack_prompt_answer()])
         response = self.bot.verify(dialog=dialog)
+        self.assertTrue(response.should_stop)
+        self.assertGreater(len(response.reason), 0)
+
+    def test_check_dialog_with_saruman_hack_returns_should_stop(self) -> None:
+        bot = WatchBot(engine=os.environ["OPENAI_ENGINE"], chatbot_instructions=read_saruman_pre_prompt())
+        dialog = Dialog(messages=[read_saruman_hack_prompt(), read_saruman_hack_prompt_answer()])
+        response = bot.verify(dialog=dialog)
         self.assertTrue(response.should_stop)
         self.assertGreater(len(response.reason), 0)
