@@ -50,9 +50,17 @@ class TestWatchBot(TestCase):
         self.assertTrue(response.should_stop)
         self.assertGreater(len(response.reason), 0)
 
-    def test_check_dialog_with_saruman_hack_returns_should_stop(self) -> None:
-        bot = WatchBot(engine=os.environ["OPENAI_ENGINE"], chatbot_instructions=read_saruman_pre_prompt())
-        dialog = Dialog(messages=[read_saruman_hack_prompt(), read_saruman_hack_prompt_answer()])
+    def test_check_dialog_with_saruman_hack_returns_should_stop_1(self) -> None:
+        self._test_check_dialog_with_saruman_hack_returns_should_stop(example_number=1)
+
+    def test_check_dialog_with_saruman_hack_returns_should_stop_2(self) -> None:
+        self._test_check_dialog_with_saruman_hack_returns_should_stop(example_number=2)
+
+    def _test_check_dialog_with_saruman_hack_returns_should_stop(self, example_number: int) -> None:
+        bot = WatchBot(engine=os.environ["OPENAI_ENGINE"], chatbot_instructions=read_saruman_pre_prompt(example_number))
+        dialog = Dialog(
+            messages=[read_saruman_hack_prompt(example_number), read_saruman_hack_prompt_answer(example_number)]
+        )
         response = bot.verify(dialog=dialog)
         self.assertTrue(response.should_stop)
         self.assertGreater(len(response.reason), 0)

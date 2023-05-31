@@ -14,9 +14,9 @@ class WatchBot:
 
     def verify(self, dialog: Dialog) -> WatchBotResponse:
         answer = self._ask_gpt_if_dialog_is_suspicious(dialog=dialog)
-        if "yes" in answer[:5].lower():
+        if "yes" in answer.lower():
             return WatchBotResponse(should_stop=True, reason=answer)
-        elif "no" in answer[:5].lower():
+        elif "no" in answer.lower():
             return WatchBotResponse(should_stop=False, reason="")
         else:
             raise ValueError(f"Unexpected answer: {answer}")
@@ -25,7 +25,7 @@ class WatchBot:
         completion = openai.Completion.create(
             prompt=self.build_prompt(dialog=dialog),
             temperature=0,
-            max_tokens=50,
+            max_tokens=250,
             engine=self._engine,
         )
         return completion.choices[0]["text"]  # type: ignore
