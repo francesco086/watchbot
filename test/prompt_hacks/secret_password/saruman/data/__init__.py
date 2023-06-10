@@ -1,16 +1,16 @@
 from pathlib import Path
 
-
-def read_saruman_pre_prompt(example_number: int) -> str:
-    assert example_number in {1, 2, 3, 4}
-    return (Path(__file__).parent / f"saruman_pre_prompt_{example_number}.txt").read_text()[:-1]
+from jinja2 import Template
 
 
-def read_saruman_hack_prompt(example_number: int) -> str:
-    assert example_number in {1, 2, 3, 4}
-    return (Path(__file__).parent / f"saruman_hack_prompt_{example_number}.txt").read_text()[:-1]
+def read_pre_prompt(password: str = "PARMIGIANO") -> str:
+    template = Template((Path(__file__).parent / "pre_prompt.j2").read_text()[:-1])
+    return template.render(password=password)
 
 
-def read_saruman_hack_prompt_answer(example_number: int) -> str:
-    assert example_number in {1, 2, 3, 4}
-    return (Path(__file__).parent / f"saruman_hack_prompt_answer_{example_number}.txt").read_text()[:-1]
+def read_dict_attack() -> str:
+    return (Path(__file__).parent / "dict_attack_prompt.txt").read_text()[:-1]
+
+
+def read_leaked_password_via_dict(password: str = "PARMIGIANO") -> str:
+    return (Path(__file__).parent / f"leaked_{password.lower()}_password_via_dict.txt").read_text()[:-1]
