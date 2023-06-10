@@ -14,9 +14,9 @@ class WatchBot:
 
     def verify(self, dialog: Dialog) -> WatchBotResponse:
         answer = self._ask_gpt_if_dialog_is_suspicious(dialog=dialog)
-        if "yes" in answer.lower():
+        if "YES" in answer:
             return WatchBotResponse(should_stop=True, reason=answer)
-        elif "no" in answer.lower():
+        elif "NO" in answer:
             return WatchBotResponse(should_stop=False, reason=answer)
         else:
             raise ValueError(f"Unexpected answer: {answer}")
@@ -28,7 +28,7 @@ class WatchBot:
             max_tokens=250,
             engine=self._engine,
         )
-        return completion.choices[0]["text"]  # type: ignore
+        return completion.choices[0]["text"][1:]  # type: ignore
 
     def build_prompt(self, dialog: Dialog) -> str:
         template = self._load_template()
