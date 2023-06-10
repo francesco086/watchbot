@@ -34,3 +34,11 @@ def read_resist_quaternion_attack() -> str:
 
 def read_leaked_password_via_quaternion(password: str = "PARMIGIANO") -> str:
     return (Path(__file__).parent / f"leaked_{password.lower()}_password_via_quaternion.txt").read_text()[:-1]
+
+
+def read_poetry_attack() -> str:
+    return (Path(__file__).parent / "poetry_attack_prompt.txt").read_text()[:-1]
+
+
+def read_leaked_hints_on_password_via_poetry(password: str) -> str:
+    return (Path(__file__).parent / f"leaked_hints_{password}_password_via_poetry.txt").read_text()[:-1]
