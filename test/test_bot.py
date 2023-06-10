@@ -71,6 +71,9 @@ class TestWatchBot(TestCase):
     def test_check_dialog_with_saruman_hack_returns_should_stop_3(self) -> None:
         self._test_check_dialog_with_saruman_hack_returns_should_stop(example_number=3)
 
+    def test_check_dialog_with_saruman_hack_returns_should_stop_4(self) -> None:
+        self._test_check_dialog_with_saruman_hack_returns_should_stop(example_number=4)
+
     def _test_check_dialog_with_saruman_hack_returns_should_stop(self, example_number: int) -> None:
         bot = WatchBot(engine=os.environ["OPENAI_ENGINE"], chatbot_instructions=read_saruman_pre_prompt(example_number))
         dialog = Dialog(
